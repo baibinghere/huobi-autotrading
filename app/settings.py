@@ -18,39 +18,39 @@ logging.basicConfig(format=_format, datefmt=_datefmt, level=_level, handlers=han
 SYMBOL = "USDT"
 PERIOD = "1min"
 
-# 交易数量
-N_TRANSACTION = 20
+# 计算n分钟内的涨跌幅
+N_MINUTES_STATE = 10
 
 # 设定参考货币的类型及权重
 CURRENCIES = {
     "BTC": {
         "WEIGHT": 1
     },
-    # "BCH": {
-    #     "WEIGHT": 1
-    # },
-    # "ETH": {
-    #     "WEIGHT": 1
-    # },
-    # "LTC": {
-    #     "WEIGHT": 1
-    # },
-    # "XRP": {
-    #     "WEIGHT": 1
-    # },
-    # "DASH": {
-    #     "WEIGHT": 1
-    # },
-    # "ETC": {
-    #     "WEIGHT": 1
-    # },
-    # "EOS": {
-    #     "WEIGHT": 1
-    # },
-    # "ZEC": {
-    #     "WEIGHT": 1
-    # },
-    # "OMG": {
-    #     "WEIGHT": 1
-    # }
+    "BCH": {
+        "WEIGHT": 1
+    },
+    "ETH": {
+        "WEIGHT": 1
+    },
+    "LTC": {
+        "WEIGHT": 1
+    },
+    "XRP": {
+        "WEIGHT": 1
+    },
+    "DASH": {
+        "WEIGHT": 1
+    },
+    "ETC": {
+        "WEIGHT": 1
+    },
+    "EOS": {
+        "WEIGHT": 1
+    },
+    "ZEC": {
+        "WEIGHT": 1
+    },
+    "OMG": {
+        "WEIGHT": 1
+    }
 }
