@@ -18,6 +18,9 @@ logging.basicConfig(format=_format, datefmt=_datefmt, level=_level, handlers=han
 SYMBOL = "USDT"
 PERIOD = "1min"
 
+# 交易数量
+N_TRANSACTION = 20
+
 # 设定参考货币的类型及权重
 CURRENCIES = {
     "BTC": {
