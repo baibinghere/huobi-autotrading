@@ -47,10 +47,19 @@ CURRENCIES = {
     "EOS": {
         "WEIGHT": 1
     },
-    "ZEC": {
-        "WEIGHT": 1
-    },
     "OMG": {
         "WEIGHT": 1
     }
 }
+
+# 保存到数据库(mongodb)
+DATABASE_RECORD = False
+
+# 保存到数据库中才需要配置以下项目
+DATABASE_SERVER_ADDRESS = "127.0.0.1"
+DATABASE_SERVER_PORT = 27017
+DATABASE_NAME = "huobi_exchange"
+
+# 如果数据库有用户名/密码，则定义如下
+DATABASE_SERVER_USERNAME = None
+DATABASE_SERVER_PASSWORD = None

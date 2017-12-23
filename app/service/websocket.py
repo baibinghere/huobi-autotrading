@@ -1,5 +1,6 @@
 from app import settings
 from app.service import kline_handler
+from app.service.db import mongodb
 import gzip
 import json
 import logging
@@ -12,6 +13,14 @@ logger = logging.getLogger(__name__)
 ###
 # 本文件通过websocket与火币网实现通信
 ###
+
+def save_data(msg):
+    if mongodb:
+        try:
+            collection = eval("mongodb." + msg['ch'].replace('.', '_'))
+            collection.insert_one(msg)
+        except Exception as exp:
+            logger.error("无法保存到数据库：" + str(exp))
 
 
 def send_message(ws, msg_dict):
@@ -32,6 +41,7 @@ def on_message(ws, message):
     elif 'subbed' in msg_dict:
         logger.debug("收到订阅状态消息：" + str(msg_dict))
     else:
+        save_data(msg_dict)
         logger.debug("收到消息: " + str(msg_dict))
         kline_handler.handle_raw_message(msg_dict)
 
