@@ -56,13 +56,12 @@ def update_data(channel):
         'close': transaction_dict[channel][-1]['tick']['close'],
     }
     analyzed_queue_dict[channel].append(data)
-    logger.info("updated: " + channel)
+    logger.debug("updated: " + channel)
     if len(analyzed_queue_dict[channel]) == settings.N_MINUTES_STATE:
-        if channel not in price_change_dict:
-            # 10分钟以内的"价格"变化
-            price_change_dict[channel] = (analyzed_queue_dict[channel][-1]['close'] - analyzed_queue_dict[channel][0]['close']) * 100 / \
-                                         analyzed_queue_dict[channel][0]['close']
-        perform_calculation()
+        # 10分钟以内的"价格"变化
+        price_change_dict[channel] = (analyzed_queue_dict[channel][-1]['close'] - analyzed_queue_dict[channel][0][
+            'close']) * 100 / analyzed_queue_dict[channel][0]['close']
+    perform_calculation()
 
 
 def handle_raw_message(msg_dict):
