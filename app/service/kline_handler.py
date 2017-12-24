@@ -1,8 +1,11 @@
+import json
+import numpy
 import logging
+import http.client
+import statistics
 
 from app import settings
 from collections import deque
-import numpy
 
 ###
 # 本文件对传入的价格信息进行处理
@@ -18,12 +21,34 @@ price_change_dict = {}
 logger = logging.getLogger(__name__)
 
 
+def get_usdt_sell_price():
+    conn = http.client.HTTPSConnection("api-otc.huobi.pro")
+    conn.request("GET", "/v1/otc/trade/list/public?coinId=2&tradeType=0&currentPage=1&payWay=&country=")
+    res = conn.getresponse()
+    try:
+        data = json.loads(res.read().decode("utf-8"))['data']
+        return statistics.mean(list(map(lambda x: x['price'], data)))
+    except Exception as exp:
+        logger.error("无法获得USDT交易卖出价：" + str(exp))
+    return "失败"
+
+
+def trigger_price_increase_action(total_price_change):
+    logger.warning("价格上升：%.2f", total_price_change)
+
+
+def trigger_price_decrease_action(total_price_change):
+    logger.warning("价格下降：%.2f", total_price_change)
+
+
 def predict_and_notify(total_price_change):
-    if total_price_change > 10:
-        logger.info("price is going up")
-    if total_price_change < -10:
-        logger.info("price is going down")
-    logger.info("price state: " + str(total_price_change))
+    usdt_sell_price = get_usdt_sell_price()
+    context = "价格变动：%.4f；USDT当前售价：%.2f" % (total_price_change, usdt_sell_price)
+    if total_price_change >= settings.PRICE_ALERT_INCREASE_POINT:
+        trigger_price_increase_action(total_price_change)
+    if total_price_change <= settings.PRICE_ALERT_DECREASE_POINT:
+        trigger_price_decrease_action(total_price_change)
+    logger.info(context)
 
 
 def perform_calculation():
@@ -36,7 +61,7 @@ def perform_calculation():
         currency = channel.split(".")[1].replace(settings.SYMBOL.lower(), "").upper()
         weight = settings.CURRENCIES[currency]["WEIGHT"]
         total_price_change += price * weight
-    total_price_change /= len(price_change_dict)
+    total_price_change /= sum(list(map(lambda x: x["WEIGHT"], settings.CURRENCIES.values())))
     predict_and_notify(total_price_change)
 
 

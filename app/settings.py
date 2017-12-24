@@ -4,7 +4,7 @@ import logging
 _filename = None
 _format = "%(asctime)-15s [%(levelname)s] [%(name)s] %(message)s"
 _datefmt = "%Y/%m/%d %H:%M:%S"
-_level = logging.INFO
+_level = logging.DEBUG
 
 if _filename:
     handlers = [logging.StreamHandler(), logging.FileHandler(_filename)]
@@ -20,6 +20,10 @@ PERIOD = "1min"
 
 # 计算n分钟内的涨跌幅
 N_MINUTES_STATE = 10
+
+# 当达到以下值，发出警报通知，触发下一步动作
+PRICE_ALERT_INCREASE_POINT = 1.25
+PRICE_ALERT_DECREASE_POINT = -1.25
 
 # 设定参考货币的类型及权重
 CURRENCIES = {
