@@ -1,6 +1,7 @@
 import json
 import numpy
 import logging
+import datetime
 import http.client
 import statistics
 
@@ -21,6 +22,9 @@ price_change_dict = {}
 
 logger = logging.getLogger(__name__)
 
+# 记录上一次邮件发送的时间
+last_mail_datetime = None
+
 
 def get_usdt_sell_price():
     conn = http.client.HTTPSConnection("api-otc.huobi.pro")
@@ -37,20 +41,26 @@ def get_usdt_sell_price():
 def send_mail(title, content):
     if not ma:
         return
+    global last_mail_datetime
+    now = datetime.datetime.now()
+    if last_mail_datetime and now - last_mail_datetime < datetime.timedelta(
+            minutes=settings.N_MINUTES_STATE):
+        return
+    last_mail_datetime = now
     with ma.SMTP() as s:
         s.send(settings.MAIL_RECEIPIENTS, content, title)
 
 
 def trigger_price_increase_action(total_price_change):
-    content = "价格上升：%.2f", total_price_change
+    content = "价格上升：%.2f" % total_price_change
     logger.warning(content)
-    send_mail(content, "火币网价格上升")
+    send_mail("火币网价格上升", content)
 
 
 def trigger_price_decrease_action(total_price_change):
-    content = "价格下降：%.2f", total_price_change
+    content = "价格下降：%.2f" % total_price_change
     logger.warning(content)
-    send_mail(content, "火币网价格下降")
+    send_mail("火币网价格下降", content)
 
 
 def predict_and_notify(total_price_change):
