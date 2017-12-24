@@ -67,3 +67,8 @@ DATABASE_NAME = "huobi_exchange"
 # 如果数据库有用户名/密码，则定义如下
 DATABASE_SERVER_USERNAME = None
 DATABASE_SERVER_PASSWORD = None
+
+# 邮件通知，配置SMTP，获取其AuthCode即可发送邮件
+MAIL_ACCOUNT = None
+MAIL_AUTH_CODE = None
+MAIL_RECEIPIENTS = []
