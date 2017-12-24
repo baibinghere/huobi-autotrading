@@ -5,6 +5,7 @@ import http.client
 import statistics
 
 from app import settings
+from app.service import ma
 from collections import deque
 
 ###
@@ -33,12 +34,23 @@ def get_usdt_sell_price():
     return "失败"
 
 
+def send_mail(title, content):
+    if not ma:
+        return
+    with ma.SMTP() as s:
+        s.send(settings.MAIL_RECEIPIENTS, content, title)
+
+
 def trigger_price_increase_action(total_price_change):
-    logger.warning("价格上升：%.2f", total_price_change)
+    content = "价格上升：%.2f", total_price_change
+    logger.warning(content)
+    send_mail(content, "火币网价格上升")
 
 
 def trigger_price_decrease_action(total_price_change):
-    logger.warning("价格下降：%.2f", total_price_change)
+    content = "价格下降：%.2f", total_price_change
+    logger.warning(content)
+    send_mail(content, "火币网价格下降")
 
 
 def predict_and_notify(total_price_change):

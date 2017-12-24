@@ -1,6 +1,6 @@
 from app import settings
 from app.service import kline_handler
-from app.service.db import mongodb
+from app.service import mongodb
 import gzip
 import json
 import logging
