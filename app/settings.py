@@ -1,13 +1,14 @@
+import sys
 import logging
 
 # 日志配置文件
 _filename = None
 _format = "%(asctime)-15s [%(levelname)s] [%(name)s] %(message)s"
 _datefmt = "%Y/%m/%d %H:%M:%S"
-_level = logging.DEBUG
+_level = logging.INFO
 
 if _filename:
-    handlers = [logging.StreamHandler(), logging.FileHandler(_filename)]
+    handlers = [logging.StreamHandler(sys.stdout), logging.FileHandler(_filename)]
 else:
     handlers = [logging.StreamHandler()]
 
@@ -26,6 +27,7 @@ PRICE_ALERT_INCREASE_POINT = 1.25
 PRICE_ALERT_DECREASE_POINT = -1.25
 
 # 设定参考货币的类型及权重
+# 通过设置与WEIGHT平级的AMOUNT，可以指定当前拥有的货币数量
 CURRENCIES = {
     "BTC": {
         "WEIGHT": 1

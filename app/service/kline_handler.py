@@ -52,13 +52,13 @@ def send_mail(title, content):
 
 
 def trigger_price_increase_action(total_price_change):
-    content = "价格上升：%.2f" % total_price_change
+    content = "价格上升：%.4f" % total_price_change
     logger.warning(content)
     send_mail("火币网价格上升", content)
 
 
 def trigger_price_decrease_action(total_price_change):
-    content = "价格下降：%.2f" % total_price_change
+    content = "价格下降：%.4f" % total_price_change
     logger.warning(content)
     send_mail("火币网价格下降", content)
 

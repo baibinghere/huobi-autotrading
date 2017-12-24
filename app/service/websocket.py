@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 def save_data(msg):
     if mongodb:
         try:
-            collection = eval("mongodb." + msg['ch'].replace('.', '_'))
+            collection = mongodb.get_collection(msg['ch'].replace('.', '_'))
             collection.insert_one(msg)
         except Exception as exp:
             logger.error("无法保存到数据库：" + str(exp))
