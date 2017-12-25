@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 ###
 
 def save_data(msg):
-    if mongodb:
+    if settings.DATABASE_RECORD and mongodb:
         try:
             collection = mongodb.get_collection(msg['ch'].replace('.', '_'))
             collection.insert_one(msg)

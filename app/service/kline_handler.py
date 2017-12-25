@@ -74,6 +74,7 @@ def predict_and_notify(total_price_change):
 
 
 def perform_calculation():
+    total_price = 0
     total_price_change = 0
     # 当收集满所有货币的10分钟内交易额后，计算才有意义
     if not len(price_change_dict) == len(settings.CURRENCIES):
@@ -82,6 +83,7 @@ def perform_calculation():
     for channel, price in price_change_dict.items():
         currency = channel.split(".")[1].replace(settings.SYMBOL.lower(), "").upper()
         weight = settings.CURRENCIES[currency]["WEIGHT"]
+        total_price += settings.CURRENCIES[currency].get("AMOUNT", 0) * transaction_dict[channel][-1]['tick']['close']
         total_price_change += price * weight
     total_price_change /= sum(list(map(lambda x: x["WEIGHT"], settings.CURRENCIES.values())))
     predict_and_notify(total_price_change)

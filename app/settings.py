@@ -5,7 +5,7 @@ import logging
 _filename = None
 _format = "%(asctime)-15s [%(levelname)s] [%(name)s] %(message)s"
 _datefmt = "%Y/%m/%d %H:%M:%S"
-_level = logging.INFO
+_level = logging.DEBUG
 
 if _filename:
     handlers = [logging.StreamHandler(sys.stdout), logging.FileHandler(_filename)]
@@ -26,43 +26,53 @@ N_MINUTES_STATE = 10
 PRICE_ALERT_INCREASE_POINT = 1.25
 PRICE_ALERT_DECREASE_POINT = -1.25
 
-# 设定参考货币的类型及权重
-# 通过设置与WEIGHT平级的AMOUNT，可以指定当前拥有的货币数量
+# 设定参考货币的类型，权重及初始默认拥有的货币数量
 CURRENCIES = {
     "BTC": {
-        "WEIGHT": 1
+        "WEIGHT": 1,
+        "AMOUNT": 0
     },
     "BCH": {
-        "WEIGHT": 1
+        "WEIGHT": 1,
+        "AMOUNT": 0
     },
     "ETH": {
-        "WEIGHT": 1
+        "WEIGHT": 1,
+        "AMOUNT": 0
     },
     "LTC": {
-        "WEIGHT": 1
+        "WEIGHT": 1,
+        "AMOUNT": 0
     },
     "XRP": {
-        "WEIGHT": 1
+        "WEIGHT": 1,
+        "AMOUNT": 0
     },
     "DASH": {
-        "WEIGHT": 1
+        "WEIGHT": 1,
+        "AMOUNT": 0
     },
     "ETC": {
-        "WEIGHT": 1
+        "WEIGHT": 1,
+        "AMOUNT": 0
     },
     "EOS": {
-        "WEIGHT": 1
+        "WEIGHT": 1,
+        "AMOUNT": 0
     },
     "OMG": {
-        "WEIGHT": 1
+        "WEIGHT": 1,
+        "AMOUNT": 0
     }
 }
 
-# 保存到数据库(mongodb)
+USDT_CURRENCY = 0
+
+# 将从火币上获取到的交易信息保存到数据库(mongodb)
 DATABASE_RECORD = False
 
-# 保存到数据库中才需要配置以下项目
-DATABASE_SERVER_ADDRESS = "127.0.0.1"
+# 配置以下项目以初始化数据库
+DATABASE_SERVER_ADDRESS = None
 DATABASE_SERVER_PORT = 27017
 DATABASE_NAME = "huobi_exchange"
 
