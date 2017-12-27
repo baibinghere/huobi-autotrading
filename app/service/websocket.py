@@ -57,7 +57,7 @@ def on_close(ws):
 
 def on_open(ws):
     # 遍历settings中的货币对象
-    for currency in settings.CURRENCIES.keys():
+    for currency in settings.COINS.keys():
         subscribe = "market.{0}{1}.kline.{2}".format(currency, settings.SYMBOL, settings.PERIOD).lower()
         data = {
             "sub": subscribe,

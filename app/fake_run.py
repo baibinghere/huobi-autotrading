@@ -1,4 +1,5 @@
 import logging
+from app import settings
 from app.service import kline_handler
 from app.service import mongodb
 
@@ -9,8 +10,8 @@ if __name__ == "__main__":
     index_dict = {}
     currency_dict = {}
     if mongodb:
-        for collection_name in mongodb.collection_names():
-            index_dict[collection_name] = 0
+        for currency in settings.COINS.keys():
+            index_dict["market_%susdt_kline_1min" % currency.lower()] = 0
 
         for collection_name in index_dict.keys():
             collection = mongodb.get_collection(collection_name)
@@ -22,7 +23,9 @@ if __name__ == "__main__":
             collection = mongodb.get_collection(min_ts_document_key)
             index_dict[min_ts_document_key] += 1
             kline_handler.handle_raw_message(currency_dict[min_ts_document_key])
-            currency_dict[min_ts_document_key] = collection.find_one({}, skip=index_dict[min_ts_document_key])
+            currency_dict[min_ts_document_key] = collection.find_one(
+                {'ts': {'$gt': 1000 * int(settings.SIMULATE_START.timestamp()),
+                        '$lt': 1000 * int(settings.SIMULATE_END.timestamp())}}, skip=index_dict[min_ts_document_key])
             if currency_dict[min_ts_document_key] is None:
                 break
     print("已完成处理")
