@@ -13,7 +13,7 @@ _level = logging.INFO
 if _filename:
     handlers = [logging.StreamHandler(sys.stdout), logging.FileHandler(_filename)]
 else:
-    handlers = [logging.StreamHandler()]
+    handlers = [logging.StreamHandler(sys.stdout)]
 
 logging.basicConfig(format=_format, datefmt=_datefmt, level=_level, handlers=handlers)
 
