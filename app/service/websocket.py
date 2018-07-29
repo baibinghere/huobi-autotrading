@@ -1,3 +1,5 @@
+import time
+
 from app import settings
 from app.service import kline_handler
 from app.service import mongodb
@@ -53,6 +55,9 @@ def on_error(ws, error):
 
 def on_close(ws):
     logger.info("已断开连接")
+    logger.info("等待5秒后重新尝试连接")
+    time.sleep(5)
+    start()
 
 
 def on_open(ws):
