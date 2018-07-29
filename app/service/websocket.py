@@ -49,7 +49,7 @@ def on_message(ws, message):
 
 
 def on_error(ws, error):
-    error = gzip.decompress(error).decode()
+    # error = gzip.decompress(error).decode()
     logger.error(str(error))
 
 
