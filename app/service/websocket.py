@@ -74,7 +74,10 @@ def on_open(ws):
 
 def start():
     ws = websocket.WebSocketApp(
-        "wss://www.huobi.com/-/s/pro/ws",
+        # 似乎 www.huobi.com 在翻墙的情况下和可用
+        # "wss://www.huobi.com/-/s/pro/ws",
+        # www.huobi.br.com 目前在不翻墙的情况下可用
+        "wss://www.huobi.br.com/-/s/pro/ws",
         on_open=on_open,
         on_message=on_message,
         on_error=on_error,
